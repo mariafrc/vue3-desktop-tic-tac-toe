@@ -1,0 +1,29 @@
+{
+  "name": "vue3-tick-tac-toe",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.11.5",
+    "express": "^4.17.2",
+    "quasar": "^2.3.0",
+    "vue": "^3.2.16"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.3",
+    "@vitejs/plugin-vue": "^1.9.3",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-vue": "^7.20.0",
+    "prettier": "2.4.1",
+    "sass": "^1.43.3",
+    "typescript": "^4.5.5",
+    "vite": "^2.6.4",
+    "vue-tsc": "^0.31.1"
+  }
+}
