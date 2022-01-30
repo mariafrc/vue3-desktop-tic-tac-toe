@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Board from "./components/Board.vue";
-import ScoreTable from "./components/Score-table.vue";
+import ScoreTable from "./components/ScoreTable.vue";
 
 export default defineComponent({
   components: { Board, ScoreTable },

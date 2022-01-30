@@ -4,33 +4,24 @@
       v-for="squareIndex in gameSquare.length"
       :key="squareIndex"
       :value="gameSquare[squareIndex - 1]"
+      @onClick="onSquareClicked(squareIndex - 1)"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import SquareItem, { SquareItemValue } from "./SquareItem.vue";
+import { useGameLogic } from "../composables/game-logic";
+import { defineComponent } from "vue";
+import SquareItem from "./SquareItem.vue";
 
 export default defineComponent({
   components: { SquareItem },
   setup() {
-    const gameSquare = ref<SquareItemValue[]>([
-      "x",
-      "o",
-      "",
-
-      "",
-      "",
-      "",
-
-      "",
-      "",
-      "",
-    ]);
+    const { gameSquare, onSquareClicked } = useGameLogic();
 
     return {
       gameSquare,
+      onSquareClicked,
     };
   },
 });

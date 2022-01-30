@@ -1,5 +1,9 @@
 <template>
-  <div class="square-item shadow-1" :class="{ free: isFree }">
+  <div
+    class="square-item shadow-1"
+    :class="{ free: isFree }"
+    @click="onClicked"
+  >
     <q-icon name="close" size="8rem" v-if="value === 'x'" class="close-icon" />
     <q-icon
       name="circle"
@@ -11,9 +15,8 @@
 </template>
 
 <script lang="ts">
+import { SquareItemValue } from "../composables/game-logic";
 import { computed, defineComponent, PropType } from "vue";
-
-export type SquareItemValue = "x" | "o" | "";
 
 export default defineComponent({
   props: {
@@ -25,9 +28,17 @@ export default defineComponent({
   emits: ["onClick"],
   setup(props, context) {
     const isFree = computed(() => !!!props.value);
+    function onClicked() {
+      if (isFree.value) {
+        setTimeout(() => {
+          context.emit("onClick");
+        }, 100);
+      }
+    }
 
     return {
       isFree,
+      onClicked,
     };
   },
 });
