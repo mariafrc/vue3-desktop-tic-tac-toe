@@ -32,15 +32,25 @@ export function useGameLogic() {
     "",
     "",
   ]);
+  const freeSquare = ref(9);
+  const gameOver = ref(false);
+  const winner = ref<SquareItemValue>("");
 
   const player = ref<SquareItemValue>("x");
 
   function onSquareClicked(index: number) {
     gameSquare.value[index] = player.value;
     player.value = player.value === "x" ? "o" : "x";
-    const winner = checkForWinner();
-    if (winner) {
-      console.log("game over");
+    freeSquare.value--;
+
+    checkIfGameEnded();
+  }
+
+  function checkIfGameEnded() {
+    const _winner = checkForWinner();
+    if (_winner || freeSquare.value === 0) {
+      winner.value = _winner;
+      gameOver.value = true;
     }
   }
 
@@ -56,11 +66,13 @@ export function useGameLogic() {
         return gameSquareValue[a];
       }
     }
-    return null;
+    return "";
   }
 
   return {
     gameSquare,
+    winner,
+    gameOver,
     onSquareClicked,
   };
 }

@@ -6,21 +6,38 @@
       :value="gameSquare[squareIndex - 1]"
       @onClick="onSquareClicked(squareIndex - 1)"
     />
+    <div class="game-over-banner" v-if="gameOver">
+      <h2 class="winner">
+        {{ winnerText }}
+      </h2>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { useGameLogic } from "../composables/game-logic";
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import SquareItem from "./SquareItem.vue";
 
 export default defineComponent({
   components: { SquareItem },
   setup() {
-    const { gameSquare, onSquareClicked } = useGameLogic();
+    const { gameSquare, winner, gameOver, onSquareClicked } = useGameLogic();
+
+    const winnerText = computed(() => {
+      if (!winner.value) {
+        return "No winner";
+      }
+      if (winner.value === "x") {
+        return "Crosses win";
+      }
+      return "Circles win";
+    });
 
     return {
       gameSquare,
+      gameOver,
+      winnerText,
       onSquareClicked,
     };
   },
@@ -29,6 +46,7 @@ export default defineComponent({
 
 <style lang="scss">
 .board {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -38,5 +56,23 @@ export default defineComponent({
   padding: 1rem;
   margin-right: 1rem;
   background: #fff;
+  .game-over-banner {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background: #0000006e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .winner {
+      margin: 0px;
+      background: #fff;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      color: #22d69c;
+    }
+  }
 }
 </style>
