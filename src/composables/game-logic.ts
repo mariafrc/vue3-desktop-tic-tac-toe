@@ -18,20 +18,10 @@ const WINNING_LINES: number[][] = [
   [2, 4, 6],
 ];
 
+const INITIAL_SQUARE: SquareItemValue[] = ["", "", "", "", "", "", "", "", ""];
+
 export function useGameLogic() {
-  const gameSquare = ref<SquareItemValue[]>([
-    "",
-    "",
-    "",
-
-    "",
-    "",
-    "",
-
-    "",
-    "",
-    "",
-  ]);
+  const gameSquare = ref<SquareItemValue[]>([...INITIAL_SQUARE]);
   const freeSquare = ref(9);
   const gameOver = ref(false);
   const winner = ref<SquareItemValue>("");
@@ -69,10 +59,18 @@ export function useGameLogic() {
     return "";
   }
 
+  function resetGame() {
+    gameSquare.value = [...INITIAL_SQUARE];
+    winner.value = "";
+    gameOver.value = false;
+    freeSquare.value = 9;
+  }
+
   return {
     gameSquare,
     winner,
     gameOver,
     onSquareClicked,
+    resetGame,
   };
 }

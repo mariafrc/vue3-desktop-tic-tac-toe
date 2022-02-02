@@ -6,10 +6,11 @@
       :value="gameSquare[squareIndex - 1]"
       @onClick="onSquareClicked(squareIndex - 1)"
     />
-    <div class="game-over-banner" v-if="gameOver">
+    <div class="game-over-banner" v-if="gameOver" @click="onGameOverClicked()">
       <h2 class="winner">
         {{ winnerText }}
       </h2>
+      <h2 class="restart">Click to restart</h2>
     </div>
   </div>
 </template>
@@ -21,8 +22,10 @@ import SquareItem from "./SquareItem.vue";
 
 export default defineComponent({
   components: { SquareItem },
-  setup() {
-    const { gameSquare, winner, gameOver, onSquareClicked } = useGameLogic();
+  emit: ["onGameEnd"],
+  setup(_, context) {
+    const { gameSquare, winner, gameOver, onSquareClicked, resetGame } =
+      useGameLogic();
 
     const winnerText = computed(() => {
       if (!winner.value) {
@@ -34,11 +37,17 @@ export default defineComponent({
       return "Circles win";
     });
 
+    function onGameOverClicked() {
+      context.emit("onGameEnd", winner.value);
+      resetGame();
+    }
+
     return {
       gameSquare,
       gameOver,
       winnerText,
       onSquareClicked,
+      onGameOverClicked,
     };
   },
 });
@@ -66,12 +75,17 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    cursor: pointer;
     .winner {
       margin: 0px;
       background: #fff;
       border-radius: 0.5rem;
       padding: 1rem;
       color: #22d69c;
+    }
+    .restart {
+      color: #fff;
     }
   }
 }
