@@ -1,5 +1,5 @@
 <template>
-  <div class="board shadow-1">
+  <div class="board-content shadow-1">
     <SquareItem
       v-for="squareIndex in gameSquare.length"
       :key="squareIndex"
@@ -54,16 +54,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.board {
+.board-content {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 0.5rem;
-  width: 500px;
-  height: 100%;
   padding: 1rem;
-  margin-right: 1rem;
   background: #fff;
   .game-over-banner {
     position: absolute;
@@ -71,7 +68,7 @@ export default defineComponent({
     bottom: 0px;
     left: 0px;
     right: 0px;
-    background: #0000006e;
+    background: #000000d6;
     display: flex;
     justify-content: center;
     align-items: center;

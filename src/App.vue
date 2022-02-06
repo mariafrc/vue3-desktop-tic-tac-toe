@@ -1,6 +1,11 @@
 <template>
   <div class="app">
     <div class="game-container">
+      <div class="header">
+        <SquareItem value="x" />
+        <SquareItem value="x" />
+      </div>
+      <q-space />
       <Board @onGameEnd="changeScore" />
       <ScoreTable :gameScore="gameScore" />
     </div>
@@ -12,9 +17,10 @@ import { defineComponent, ref } from "vue";
 import Board from "./components/Board.vue";
 import ScoreTable from "./components/ScoreTable.vue";
 import { SquareItemValue } from "./composables/game-logic";
+import SquareItem from "./components/SquareItem.vue";
 
 export default defineComponent({
-  components: { Board, ScoreTable },
+  components: { Board, ScoreTable, SquareItem },
   setup() {
     const gameScore = ref({
       x: 0,
@@ -48,8 +54,13 @@ body {
   align-items: center;
   background: #22d69c;
   .game-container {
-    display: flex;
-    height: 500px;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 1rem;
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 </style>

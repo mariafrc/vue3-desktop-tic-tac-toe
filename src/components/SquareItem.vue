@@ -6,7 +6,7 @@
   >
     <q-icon name="close" size="8rem" v-if="value === 'x'" class="close-icon" />
     <q-icon
-      name="circle"
+      name="radio_button_unchecked"
       size="8rem"
       v-if="value === 'o'"
       class="circle-icon"
@@ -51,6 +51,9 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   border-radius: 0.3rem;
+  background: #fff;
+  width: 130px;
+  height: 130px;
   &.free {
     cursor: pointer;
     background: #ffaeae;
