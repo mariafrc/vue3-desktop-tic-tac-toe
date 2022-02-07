@@ -19,8 +19,18 @@
       <h4>Options</h4>
       <q-separator />
       <div class="options-container">
-        <q-btn push color="primary" label="Restart Game" />
-        <q-btn push color="primary" label="Reset Score" />
+        <q-btn
+          push
+          color="primary"
+          label="Restart Game"
+          @click="onRestartClicked"
+        />
+        <q-btn
+          push
+          color="primary"
+          label="Reset Score"
+          @click="onResetScoreClicked"
+        />
       </div>
     </div>
   </div>
@@ -29,6 +39,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import SquareItem from "./SquareItem.vue";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   components: { SquareItem },
@@ -38,7 +49,37 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {},
+  emits: ["restartGame", "resetScore"],
+  setup(_, context) {
+    const $q = useQuasar();
+
+    function onRestartClicked() {
+      $q.dialog({
+        title: "Confirmation",
+        message: "Would you like to restart game?",
+        cancel: true,
+        persistent: true,
+      }).onOk(() => {
+        context.emit("restartGame");
+      });
+    }
+
+    function onResetScoreClicked() {
+      $q.dialog({
+        title: "Confirmation",
+        message: "Would you like to reset game score?",
+        cancel: true,
+        persistent: true,
+      }).onOk(() => {
+        context.emit("resetScore");
+      });
+    }
+
+    return {
+      onRestartClicked,
+      onResetScoreClicked,
+    };
+  },
 });
 </script>
 

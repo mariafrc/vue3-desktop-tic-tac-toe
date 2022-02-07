@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 export type SquareItemValue = "x" | "o" | "";
 
@@ -19,28 +19,36 @@ const WINNING_LINES: number[][] = [
 ];
 
 const INITIAL_SQUARE: SquareItemValue[] = ["", "", "", "", "", "", "", "", ""];
+const INITIAL_SCORE = {
+  x: 0,
+  o: 0,
+};
 
 export function useGameLogic() {
   const gameSquare = ref<SquareItemValue[]>([...INITIAL_SQUARE]);
-  const freeSquare = ref(9);
-  const gameOver = ref(false);
-  const winner = ref<SquareItemValue>("");
+  const hasAvalaibleSquare = computed(() => gameSquare.value.some((s) => !s));
+
+  const gameScore = ref<{ x: number; o: number }>({ ...INITIAL_SCORE });
 
   const player = ref<SquareItemValue>("x");
+  const gameOver = ref(false);
+  const winner = ref<SquareItemValue>("");
 
   function onSquareClicked(index: number) {
     gameSquare.value[index] = player.value;
     player.value = player.value === "x" ? "o" : "x";
-    freeSquare.value--;
 
     checkIfGameEnded();
   }
 
   function checkIfGameEnded() {
-    const _winner = checkForWinner();
-    if (_winner || freeSquare.value === 0) {
-      winner.value = _winner;
+    const turnWinner = checkForWinner();
+    if (turnWinner || !hasAvalaibleSquare.value) {
+      winner.value = turnWinner;
       gameOver.value = true;
+      if (turnWinner) {
+        gameScore.value[turnWinner]++;
+      }
     }
   }
 
@@ -59,18 +67,24 @@ export function useGameLogic() {
     return "";
   }
 
-  function resetGame() {
+  function restartGame() {
     gameSquare.value = [...INITIAL_SQUARE];
     winner.value = "";
     gameOver.value = false;
-    freeSquare.value = 9;
+  }
+
+  function resetScore() {
+    gameScore.value = { ...INITIAL_SCORE };
   }
 
   return {
     gameSquare,
     winner,
     gameOver,
+    gameScore,
+    player,
     onSquareClicked,
-    resetGame,
+    restartGame,
+    resetScore,
   };
 }

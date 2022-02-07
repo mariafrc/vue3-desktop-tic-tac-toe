@@ -4,9 +4,9 @@
       v-for="squareIndex in gameSquare.length"
       :key="squareIndex"
       :value="gameSquare[squareIndex - 1]"
-      @onClick="onSquareClicked(squareIndex - 1)"
+      @onClick="$emit('onSquareClicked', squareIndex - 1)"
     />
-    <div class="game-over-banner" v-if="gameOver" @click="onGameOverClicked()">
+    <div class="game-over-banner" v-if="gameOver" @click="$emit('restartGame')">
       <h2 class="winner">
         {{ winnerText }}
       </h2>
@@ -16,38 +16,40 @@
 </template>
 
 <script lang="ts">
-import { useGameLogic } from "../composables/game-logic";
-import { computed, defineComponent } from "vue";
+import { SquareItemValue } from "../composables/game-logic";
+import { computed, defineComponent, PropType } from "vue";
 import SquareItem from "./SquareItem.vue";
 
 export default defineComponent({
   components: { SquareItem },
-  emit: ["onGameEnd"],
-  setup(_, context) {
-    const { gameSquare, winner, gameOver, onSquareClicked, resetGame } =
-      useGameLogic();
-
+  emit: ["onSquareClicked", "restartGame"],
+  props: {
+    gameSquare: {
+      type: Object as PropType<SquareItemValue[]>,
+      required: true,
+    },
+    winner: {
+      type: Object as PropType<SquareItemValue>,
+      required: true,
+    },
+    gameOver: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup(props) {
     const winnerText = computed(() => {
-      if (!winner.value) {
+      if (!props.winner) {
         return "No winner";
       }
-      if (winner.value === "x") {
+      if (props.winner === "x") {
         return "Crosses win";
       }
       return "Circles win";
     });
 
-    function onGameOverClicked() {
-      context.emit("onGameEnd", winner.value);
-      resetGame();
-    }
-
     return {
-      gameSquare,
-      gameOver,
       winnerText,
-      onSquareClicked,
-      onGameOverClicked,
     };
   },
 });

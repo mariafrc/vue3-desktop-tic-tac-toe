@@ -1,41 +1,62 @@
 <template>
   <div class="app">
     <div class="game-container">
-      <div class="header">
-        <SquareItem value="x" />
-        <SquareItem value="x" />
+      <div>
+        <SquareItem
+          :value="player"
+          :class="{
+            'align-left': player === 'x',
+            'align-right': player === 'o',
+          }"
+        />
       </div>
       <q-space />
-      <Board @onGameEnd="changeScore" />
-      <ScoreTable :gameScore="gameScore" />
+      <Board
+        :gameSquare="gameSquare"
+        :winner="winner"
+        :gameOver="gameOver"
+        @onSquareClicked="onSquareClicked"
+        @restartGame="restartGame"
+      />
+      <ScoreTable
+        :gameScore="gameScore"
+        @restartGame="restartGame"
+        @resetScore="resetScore"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import Board from "./components/Board.vue";
 import ScoreTable from "./components/ScoreTable.vue";
-import { SquareItemValue } from "./composables/game-logic";
+import { useGameLogic } from "./composables/game-logic";
 import SquareItem from "./components/SquareItem.vue";
 
 export default defineComponent({
   components: { Board, ScoreTable, SquareItem },
   setup() {
-    const gameScore = ref({
-      x: 0,
-      o: 0,
-    });
-
-    function changeScore(winner: SquareItemValue) {
-      if (winner) {
-        gameScore.value[winner]++;
-      }
-    }
+    const {
+      gameSquare,
+      winner,
+      gameOver,
+      gameScore,
+      player,
+      onSquareClicked,
+      restartGame,
+      resetScore,
+    } = useGameLogic();
 
     return {
+      gameSquare,
+      winner,
+      gameOver,
       gameScore,
-      changeScore,
+      player,
+      onSquareClicked,
+      restartGame,
+      resetScore,
     };
   },
 });
@@ -57,9 +78,11 @@ body {
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 1rem;
-    .header {
-      display: flex;
-      justify-content: space-between;
+    .align-left {
+      float: left;
+    }
+    .align-right {
+      float: right;
     }
   }
 }
