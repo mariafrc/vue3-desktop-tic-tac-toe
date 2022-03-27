@@ -4,6 +4,7 @@ import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.ELECTRON == "true" ? './' : ".",
   plugins: [
     vue({
       template: { transformAssetUrls }
@@ -14,4 +15,5 @@ export default defineConfig({
   server: {
     port: 8081,
   },
+  build: { outDir: "dist_vue" }
 })

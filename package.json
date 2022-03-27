@@ -1,12 +1,20 @@
 {
   "name": "vue3-tick-tac-toe",
   "version": "1.0.0",
+  "author": "Franck Bemaria (franckbemaria@gmail.com)",
+  "description": "Tic Tac Toe desktop app with vue3 and electron",
+  "build": {
+    "appId": "com.example.app"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
     "serve": "vite preview",
     "electron": "wait-on tcp:8081 && cross-env IS_DEV=true electron .",
-    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run dev\" \"npm run electron\""
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run dev\" \"npm run electron\"",
+    "electron:pack": "npx electron-builder --dir",
+    "electron:builder": "npx electron-builder --config=electron-builder-config.js",
+    "build:for:electron": "cross-env ELECTRON=true vite build",
+    "app:build": "npm run build:for:electron && npm run electron:builder"
   },
   "main": "electron/main.js",
   "dependencies": {

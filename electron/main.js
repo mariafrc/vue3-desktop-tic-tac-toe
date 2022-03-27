@@ -22,7 +22,7 @@ function createWindow() {
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:8081'
-      : `file://${path.join(__dirname, '../dist/index.html')}`
+      : `file://${path.join(__dirname, '../dist_vue/index.html')}`
   );
   // Open the DevTools.
   // if (isDev) {

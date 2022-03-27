@@ -9,3 +9,6 @@ package-lock.json
 
 # editor
 .vscode
+
+dist_electron
+dist_vue
