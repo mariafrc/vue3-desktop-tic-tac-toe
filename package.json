@@ -4,7 +4,7 @@
   "author": "Franck Bemaria (franckbemaria@gmail.com)",
   "description": "Tic Tac Toe desktop app with vue3 and electron",
   "build": {
-    "appId": "com.example.app"
+    "appId": "com.electron.mariafrc.tictactoevue"
   },
   "scripts": {
     "dev": "vite",
